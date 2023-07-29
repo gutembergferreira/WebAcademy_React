@@ -1,0 +1,211 @@
+tags:
+  name: Usuario
+  description: Endpoints da entidade Usuario
+
+paths:
+  /usuario:
+    get:
+      summary: Retorna a listagem de usuários cadastrados
+      tags: [Usuario]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UsuarioDto"
+    post:
+      summary: Cria um novo usuario
+      tags: [Usuario]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUsuarioDto"
+        required: true
+      responses:
+        "201":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsuarioDto"
+        "400":
+          description: Já existe um usuário com o email informado.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Já existe um usuário com o email informado." }
+        "403":
+          description: Operação não autorizada.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Operação não autorizada." }
+  /usuario/{id}:
+    get:
+      summary: Retorna os dados de um usuario
+      tags: [Usuario]
+      parameters:
+        - name: id
+          in: path
+          description: ID do usuario (UUID)
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsuarioDto"
+        "400":
+          description: Usuário não existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Usuario não existe." }
+
+    put:
+      summary: Modifica os dados de um dado usuario
+      tags: [Usuario]
+      parameters:
+        - name: id
+          in: path
+          description: ID do usuario (UUID)
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUsuarioDto"
+        required: true
+      responses:
+        "200":
+          description: Usuario atualizado com os novos dados.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Usuario atualizado com sucesso." }
+        "400":
+          description: O usuario não existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Usuario não existe." }
+        "403":
+          description: Operação não autorizada.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Operação não autorizada." }
+    delete:
+      summary: Apaga um dado usuario
+      tags: [Usuario]
+      parameters:
+        - name: id
+          in: path
+          description: ID do usuario (UUID)
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuario apagado com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Usuario apagado com sucesso." }
+        "400":
+          description: O usuario não existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Usuario não existe." }
+        "403":
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Operação não autorizada." }
+
+components:
+  schemas:
+    UsuarioDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID do usuário no formato UUID.
+          example: 320e72e0-18e1-11ee-b9a3-01ecc22810d1
+        nome:
+          type: string
+          description: Nome do usário.
+          example: Maurícho chagas
+        email:
+          type: string
+          description: Email.
+          example: mauricio.chagas@gmal.com
+        tipoUsuarioId:
+          type: string
+          description: ID (UUID) do tipo de usuário.
+          example: 6a4cda94-fbb6-476b-be29-f4124cae9058
+        createdAt:
+          type: date
+          description: Data de criação do usuário no banco de dados.
+          example: 2023-07-02T10:04:07.000Z
+        updatedAt:
+          type: date
+          description: Data de atualização do usuário no banco de dados.
+          example: 2023-07-02T10:04:07.000Z
+    CreateUsuarioDto:
+      type: object
+      properties:
+        nome:
+          type: string
+          description: Nome do usário.
+          example: Maurícho chagas
+        email:
+          type: string
+          description: Email.
+          example: mauricio.chagas@gmal.com
+        tipoUsuarioId:
+          type: string
+          description: ID (UUID) do tipo de usuário.
+          example: 6a4cda94-fbb6-476b-be29-f4124cae9058
+        senha:
+          type: string
+          description: Senha do usuário
+          example: 12345678
+    UpdateUsuarioDto:
+      type: object
+      properties:
+        nome:
+          type: string
+          description: Nome do usário.
+          example: Maurícho chagas
+        email:
+          type: string
+          description: Email.
+          example: mauricio.chagas@gmal.com
+        tipoUsuarioId:
+          type: string
+          description: ID (UUID) do tipo de usuário.
+          example: 6a4cda94-fbb6-476b-be29-f4124cae9058
+        senha:
+          type: string
+          description: Senha do usuário
+          example: 12345678

@@ -1,0 +1,102 @@
+tags:
+  name: Auth
+  description: Endpoints de autentificação e criação de usuários
+
+paths:
+  /signup:
+    post:
+      summary: Signup (auto cadastro de usuário)
+      tags: [Auth]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignUpDto"
+        required: true
+      responses:
+        "200":
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsuarioDto"
+        "400":
+          description: Já existe usuário com o email informado.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Já existe usuário com o email informado." }
+  /login:
+    post:
+      summary: Login de usuários
+      tags: [Auth]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginDto"
+        required: true
+      responses:
+        "200":
+          description: Usuário autenticado com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Usuário autenticado com sucesso." }
+        "401":
+          description: Email e/ou senha incorretos.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Email e/ou senha incorretos." }
+  /logout:
+    post:
+      summary: Logout de usuários
+      tags: [Auth]
+      responses:
+        "200":
+          description: Usuario deslogado com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Usuario deslogado com sucesso." }
+        "401":
+          description: O usuário não estava logado.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "O usuário não estava logado." }
+
+components:
+  schemas:
+    SignUpDto:
+      type: object
+      properties:
+        nome:
+          type: string
+          description: Nome do usuário
+          example: Amy Marving
+        email:
+          type: string
+          description: Email do usuário
+          example: Amy98@hotmail.com
+        senha:
+          type: string
+          description: Senha do usuário
+          example: 12345678
+    LoginDto:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email do usuário
+          example: Amy98@hotmail.com
+        senha:
+          type: string
+          description: Senha do usuário
+          example: 12345678

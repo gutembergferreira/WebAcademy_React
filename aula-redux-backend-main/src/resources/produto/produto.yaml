@@ -1,0 +1,204 @@
+tags:
+  name: Produto
+  description: Endpoints da entidade Produto
+
+paths:
+  /produto:
+    get:
+      summary: Retorna a listagem de produtos cadastrados
+      tags: [Produto]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Produto"
+    post:
+      summary: Cria um novo produto
+      tags: [Produto]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProdutoDto"
+        required: true
+      responses:
+        "201":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Produto"
+        "400":
+          description: Produto já existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Produto já existe" }
+        "403":
+          description: Operação não autorizada.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Operação não autorizada" }
+
+  /produto/{id}:
+    get:
+      summary: Retorna os dados de um produto
+      tags: [Produto]
+      parameters:
+        - name: id
+          in: path
+          description: ID do produto (UUID)
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Produto"
+        "400":
+          description: Produto não existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Produto não existe" }
+
+    put:
+      summary: Modifica os dados de um dado produto
+      tags: [Produto]
+      parameters:
+        - name: id
+          in: path
+          description: ID do produto (UUID)
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProdutoDto"
+        required: true
+      responses:
+        "200":
+          description: Produto atualizado com os novos dados.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Produto atualizado." }
+        "400":
+          description: O produto não existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Produto não existe." }
+        "403":
+          description: Operação não autorizada.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Operação não autorizada." }
+    delete:
+      summary: Apaga um dado produto
+      tags: [Produto]
+      parameters:
+        - name: id
+          in: path
+          description: ID do produto (UUID)
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Produto apagado.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Produto apagado." }
+        "400":
+          description: O produto não existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Produto não existe." }
+        "403":
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: "Operação não autorizada." }
+
+components:
+  schemas:
+    Produto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID do produto no formato UUID.
+          example: f5e606fe-5d40-4422-9a56-8d5079e3b504
+        nome:
+          type: string
+          description: Nome do produto.
+          example: Celular Motorola Moto g52
+        preco:
+          type: float
+          description: Preço.
+          example: 1259.00
+        estoque:
+          type: integer
+          description: Número de ítens no estoque.
+          example: 120
+        createdAt:
+          type: date
+          description: Data de criação do item no banco de dados.
+          example: 2023-07-02T10:04:07.000Z
+        updatedAt:
+          type: date
+          description: Data de atualização do item no banco de dados.
+          example: 2023-07-02T10:04:07.000Z
+    CreateProdutoDto:
+      type: object
+      properties:
+        nome:
+          type: string
+          description: Nome do produto.
+          example: Celular Motorola Moto g52
+        preco:
+          type: float
+          description: Preço.
+          example: 1259.00
+        estoque:
+          type: integer
+          description: Número de ítens no estoque.
+          example: 120
+    UpdateProdutoDto:
+      type: object
+      properties:
+        nome:
+          type: string
+          description: Nome do produto.
+          example: Celular Motorola Moto g52
+        preco:
+          type: float
+          description: Preço.
+          example: 1259.00
+        estoque:
+          type: integer
+          description: Número de ítens no estoque.
+          example: 120
